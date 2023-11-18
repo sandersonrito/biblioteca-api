@@ -1,28 +1,48 @@
 package com.fuctura.biblioteca.model;
 
+import com.fuctura.biblioteca.enums.Tamanho;
+
+import javax.persistence.*;
+
+@Entity
 public class Livro {
-    private int id;
+
+    //É necessário colocar @Entity e o @Id unico para persistir no banco de dados.
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String titulo;
     private String nome_autor;
     private String texto;
-    private Categoria categoria;
 
-    public Livro(int id, String titulo, String nome_autor, String texto, Categoria categoria) {
+    //É necessário colocar a relação do banco antes de fazer uma compisição. Ex: Existe muitos livros
+    // para uma categoria, esse comando é feito atraves de ex: @ManyToOne.
+    @ManyToOne
+    // apos fazer a relação é necessário fazer a integração da coluda de onde vem (no caso é o One do ManyToOne)
+    // para agregar a tabela de livro.
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+    private Tamanho tamanho;
+    //<<enumerate>> é uma especie de lista de conceitos bem definidos de um produto, por exemplo, que é colocado a parte
+    // de um produto. não é colocado como um atributo na classe do produto.
+
+    public Livro() {
+    }
+
+    public Livro(Integer id, String titulo, String nome_autor, String texto, Categoria categoria, Tamanho tamanho) {
         this.id = id;
         this.titulo = titulo;
         this.nome_autor = nome_autor;
         this.texto = texto;
         this.categoria = categoria;
+        this.tamanho = tamanho;
     }
 
-    public Livro() {
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -34,12 +54,12 @@ public class Livro {
         this.titulo = titulo;
     }
 
-    public String getNomeAutor() {
+    public String getNome_autor() {
         return nome_autor;
     }
 
-    public void setNomeAutor(String nomeAutor) {
-        this.nome_autor = nomeAutor;
+    public void setNome_autor(String nome_autor) {
+        this.nome_autor = nome_autor;
     }
 
     public String getTexto() {
@@ -57,4 +77,14 @@ public class Livro {
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
     }
+
+    public Tamanho getTamanho() {
+        return tamanho;
+    }
+
+    public void setTamanho(Tamanho tamanho) {
+        this.tamanho = tamanho;
+    }
+
+
 }

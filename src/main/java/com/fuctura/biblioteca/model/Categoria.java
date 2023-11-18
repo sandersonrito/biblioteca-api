@@ -1,30 +1,41 @@
+//ESTUDAR SOBRE TESTES UNITÁRIOS
+//ESTUDAR DEVOPS
+
 package com.fuctura.biblioteca.model;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Entity
 public class Categoria {
 
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String nome;
     private String descricao;
+
+    @OneToMany(mappedBy = "categoria")
+    //é necessario fazer o mapeamento de onde vem as categorias. A leitura  do @OneToMany(mappedBy = "categoria)"
+    // disso é: A relação de categoria em relação aos livros é de um para muitos e essa relação é mapeada em categoria.
+
     private List<Livro> livros = new ArrayList<>();
 
     public Categoria() {
     }
 
-    public Categoria(int id, String nome, String descricao, List<Livro> livros) {
+    public Categoria(Integer id, String nome, String descricao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
-        this.livros = livros;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
