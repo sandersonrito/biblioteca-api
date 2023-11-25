@@ -1,5 +1,6 @@
 package com.fuctura.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fuctura.biblioteca.enums.Tamanho;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Livro {
     private String nome_autor;
     private String texto;
 
+    @JsonIgnore
     //É necessário colocar a relação do banco antes de fazer uma compisição. Ex: Existe muitos livros
     // para uma categoria, esse comando é feito atraves de ex: @ManyToOne.
     @ManyToOne
@@ -29,7 +31,7 @@ public class Livro {
     public Livro() {
     }
 
-    public Livro(Integer id, String titulo, String nome_autor, String texto, Categoria categoria, Tamanho tamanho) {
+    public Livro(Integer id, String titulo, String nome_autor, String texto, Tamanho tamanho, Categoria categoria) {
         this.id = id;
         this.titulo = titulo;
         this.nome_autor = nome_autor;
