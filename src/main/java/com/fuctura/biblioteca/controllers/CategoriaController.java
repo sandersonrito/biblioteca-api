@@ -1,12 +1,16 @@
 package com.fuctura.biblioteca.controllers;
 
+
+import com.fuctura.biblioteca.dtos.CategoriaDto;
 import com.fuctura.biblioteca.model.Categoria;
-import com.fuctura.biblioteca.repositories.CategoriaRepository;
 import com.fuctura.biblioteca.services.CategoriaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 //usado para comunicar com o corpo
@@ -25,22 +29,35 @@ public class CategoriaController {
    @Autowired
    private CategoriaService categoriaService;
 
-//   @GetMapping("/{id}") ambos os modelos retorna a mesma coisa, o ID
+   @Autowired
+   private ModelMapper modelMapper;
+
+
+
+   // o ResponseEntity personaliza o codigo de retorno da classe.
+ //   @GetMapping("/{id}") ambos os modelos retorna a mesma coisa, o ID
    @GetMapping(value = "/{id}")
-   public Categoria findById(@PathVariable Integer id){
+   public ResponseEntity<CategoriaDto> findById(@PathVariable Integer id){
       Categoria cat = categoriaService.findById(id);
-      return cat;
+      return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
    }
 
    @GetMapping
-   public List<Categoria> findAll(){
+   public ResponseEntity<List<CategoriaDto>> findAll(){
+      List<Categoria> list = categoriaService.findAll();
 
-      return categoriaService.findAll();
+      // sempre que eu quiser transformar uma lista em outra lista usar o stream().
+      return ResponseEntity.ok().body(list.stream().map(obj -> modelMapper.map(obj, CategoriaDto.class)).
+              collect(Collectors.toList()));
+
+      // o return irá pegar cada objeto da lista categorias e vai transformar em uma lista de categoriasDto.
    }
 
    @PostMapping
-   public Categoria save(@RequestBody Categoria obj){
-      return categoriaService.save(obj);
+   public ResponseEntity<CategoriaDto> save(@RequestBody CategoriaDto categoriaDto){
+      Categoria cat = categoriaService.save(categoriaDto);
+      return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
+
    }
 
 }
