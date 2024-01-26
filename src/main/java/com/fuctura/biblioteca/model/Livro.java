@@ -1,6 +1,7 @@
 package com.fuctura.biblioteca.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fuctura.biblioteca.dtos.LivroDto;
 import com.fuctura.biblioteca.enums.Tamanho;
 
 import javax.persistence.*;
@@ -38,6 +39,15 @@ public class Livro {
         this.texto = texto;
         this.categoria = categoria;
         this.tamanho = tamanho;
+    }
+
+    public Livro(LivroDto livroDTO) {
+        this.id = livroDTO.getId();
+        this.titulo = livroDTO.getTitulo();
+        this.nome_autor = livroDTO.getNome_autor();
+        this.texto = livroDTO.getTexto();
+        this.tamanho = livroDTO.getTamanho();
+        this.categoria = livroDTO.getCategoria();
     }
 
     public Integer getId() {

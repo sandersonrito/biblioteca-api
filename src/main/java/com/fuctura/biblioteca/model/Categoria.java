@@ -3,6 +3,8 @@
 
 package com.fuctura.biblioteca.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,7 @@ public class Categoria {
     //é necessario fazer o mapeamento de onde vem as categorias. A leitura  do @OneToMany(mappedBy = "categoria)"
     // disso é: A relação de categoria em relação aos livros é de um para muitos e essa relação é mapeada em categoria.
 
+    @JsonIgnore
     private List<Livro> livros = new ArrayList<>();
 
     public Categoria() {

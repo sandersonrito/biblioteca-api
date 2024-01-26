@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,10 +55,23 @@ public class CategoriaController {
    }
 
    @PostMapping
-   public ResponseEntity<CategoriaDto> save(@RequestBody CategoriaDto categoriaDto){
+   public ResponseEntity<CategoriaDto> save(@Valid @RequestBody CategoriaDto categoriaDto){
       Categoria cat = categoriaService.save(categoriaDto);
       return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
 
    }
 
+   //metodo atualizar (update) do crud
+   @PutMapping ("/{id}")
+   public ResponseEntity<CategoriaDto> upDate(@PathVariable Integer id, @Valid @RequestBody CategoriaDto categoriaDto){
+      categoriaDto.setId(id);
+      Categoria cat = categoriaService.upDate(categoriaDto);
+      return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
+   }
+
+   @DeleteMapping(value = "/{id}")
+   public ResponseEntity <Void> delete(@PathVariable Integer id){
+      categoriaService.delete(id);
+      return ResponseEntity.noContent().build();
+   }
 }
